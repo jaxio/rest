@@ -40,7 +40,7 @@ import fr.jaxio.domain.SavedSearch_;
 @Table(name = "SAVED_SEARCH")
 @FilterDef(name = "mySavedSearchFilter", defaultCondition = "ACCOUNT_ID = :currentAccountId ", parameters = @ParamDef(name = "currentAccountId", type = "org.hibernate.type.StringType"))
 @Filter(name = "mySavedSearchFilter")
-public class SavedSearch implements Identifiable<Integer>, Serializable {
+public class SavedSearch implements Identifiable<Integer>, Serializable, Copyable<SavedSearch> {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(SavedSearch.class);
 
@@ -196,5 +196,34 @@ public class SavedSearch implements Identifiable<Integer>, Serializable {
                 .add(SavedSearch_.formClassname.getName(), getFormClassname()) //
                 .add(SavedSearch_.formContent.getName(), getFormContent()) //
                 .toString();
+    }
+
+    /**
+     * Return a copy of the current object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public SavedSearch copy() {
+        SavedSearch savedSearch = new SavedSearch();
+        copyTo(savedSearch);
+        return savedSearch;
+    }
+
+    /**
+     * Copy the current properties to the given object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public void copyTo(SavedSearch savedSearch) {
+        savedSearch.setId(getId());
+        savedSearch.setName(getName());
+        savedSearch.setFormClassname(getFormClassname());
+        savedSearch.setFormContent(getFormContent());
+        //savedSearch.setAccountId(getAccountId());
+        if (getAccount() != null) {
+            savedSearch.setAccount(new Account().id(getAccount().getId()));
+        }
     }
 }

@@ -14,6 +14,9 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.wordnik.swagger.annotations.Api;
+
 import fr.jaxio.dao.AccountDao;
 import fr.jaxio.domain.Account;
 import fr.jaxio.repository.support.GenericRepository;

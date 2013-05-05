@@ -48,7 +48,7 @@ import fr.jaxio.domain.IdentifiableHashBuilder;
 @FilterDef(name = "myDocumentFilter", defaultCondition = "ACCOUNT_ID = :currentAccountId ", parameters = @ParamDef(name = "currentAccountId", type = "org.hibernate.type.StringType"))
 @Filter(name = "myDocumentFilter")
 @Indexed
-public class Document implements Identifiable<String>, Serializable {
+public class Document implements Identifiable<String>, Serializable, Copyable<Document> {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(Document.class);
 
@@ -245,5 +245,36 @@ public class Document implements Identifiable<String>, Serializable {
                 .add(Document_.documentSize.getName(), getDocumentSize()) //
                 .add(Document_.version.getName(), getVersion()) //
                 .toString();
+    }
+
+    /**
+     * Return a copy of the current object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public Document copy() {
+        Document document = new Document();
+        copyTo(document);
+        return document;
+    }
+
+    /**
+     * Copy the current properties to the given object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public void copyTo(Document document) {
+        document.setId(getId());
+        //document.setAccountId(getAccountId());
+        document.setDocumentBinary(getDocumentBinary());
+        document.setDocumentFileName(getDocumentFileName());
+        document.setDocumentContentType(getDocumentContentType());
+        document.setDocumentSize(getDocumentSize());
+        document.setVersion(getVersion());
+        if (getOwner() != null) {
+            document.setOwner(new Account().id(getOwner().getId()));
+        }
     }
 }

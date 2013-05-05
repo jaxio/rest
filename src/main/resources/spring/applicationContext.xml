@@ -23,11 +23,7 @@
 	]]></description>
 
 	<!-- context -->
-	<context:component-scan base-package="fr.jaxio">
-		<!-- exclude web beans as they live in the web application context -->
-		<!-- Note: this regexp does not work if you try to escape the '.' -->
-		<context:exclude-filter type="regex" expression="fr.jaxio.web.*" />
-	</context:component-scan>
+	<context:component-scan base-package="fr.jaxio"/>
 	<context:property-placeholder location="classpath*:database.properties,classpath*:hibernate.properties" />
 
 	<!-- security -->

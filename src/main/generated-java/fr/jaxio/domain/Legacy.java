@@ -26,7 +26,7 @@ import fr.jaxio.domain.Legacy_;
 
 @Entity
 @Table(name = "LEGACY", uniqueConstraints = { @UniqueConstraint(name = "PRIMARY_KEY_8", columnNames = { "NAME", "CODE", "DEPT" }) })
-public class Legacy implements Identifiable<LegacyPk>, Serializable {
+public class Legacy implements Identifiable<LegacyPk>, Serializable, Copyable<Legacy> {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(Legacy.class);
 
@@ -122,5 +122,30 @@ public class Legacy implements Identifiable<LegacyPk>, Serializable {
         return Objects.toStringHelper(this) //
                 .add(Legacy_.extraInfo.getName(), getExtraInfo()) //
                 .toString();
+    }
+
+    /**
+     * Return a copy of the current object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public Legacy copy() {
+        Legacy legacy = new Legacy();
+        copyTo(legacy);
+        return legacy;
+    }
+
+    /**
+     * Copy the current properties to the given object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public void copyTo(Legacy legacy) {
+        legacy.setName(getName());
+        legacy.setCode(getCode());
+        legacy.setDept(getDept());
+        legacy.setExtraInfo(getExtraInfo());
     }
 }

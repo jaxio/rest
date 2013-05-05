@@ -12,5 +12,8 @@
 			<pack name="pack-backend-jpa" enable="true" />
 			<pack name="pack-custom" path="src/main/celerio" enable="false" />
 		</packs>
+		<modules>
+			<module>COPYABLE</module>
+		</modules>
 	</configuration>
 </celerio>

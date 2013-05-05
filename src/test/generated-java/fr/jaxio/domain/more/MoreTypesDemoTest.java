@@ -34,6 +34,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import fr.jaxio.domain.Copyable;
 import fr.jaxio.domain.Identifiable;
 
 /**

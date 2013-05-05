@@ -42,7 +42,7 @@ import fr.jaxio.domain.IdentifiableHashBuilder;
 @FilterDef(name = "myBookFilter", defaultCondition = "ACCOUNT_ID = :currentAccountId ", parameters = @ParamDef(name = "currentAccountId", type = "org.hibernate.type.StringType"))
 @Filter(name = "myBookFilter")
 @Indexed
-public class Book implements Identifiable<Integer>, Serializable {
+public class Book implements Identifiable<Integer>, Serializable, Copyable<Book> {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(Book.class);
 
@@ -196,5 +196,34 @@ public class Book implements Identifiable<Integer>, Serializable {
                 .add(Book_.numberOfPages.getName(), getNumberOfPages()) //
                 .add(Book_.version.getName(), getVersion()) //
                 .toString();
+    }
+
+    /**
+     * Return a copy of the current object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public Book copy() {
+        Book book = new Book();
+        copyTo(book);
+        return book;
+    }
+
+    /**
+     * Copy the current properties to the given object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public void copyTo(Book book) {
+        book.setId(getId());
+        //book.setAccountId(getAccountId());
+        book.setTitle(getTitle());
+        book.setNumberOfPages(getNumberOfPages());
+        book.setVersion(getVersion());
+        if (getOwner() != null) {
+            book.setOwner(new Account().id(getOwner().getId()));
+        }
     }
 }

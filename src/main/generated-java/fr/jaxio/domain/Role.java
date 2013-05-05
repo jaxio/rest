@@ -28,7 +28,7 @@ import fr.jaxio.domain.Role_;
 @Entity
 @Table(name = "`ROLE`")
 @Indexed
-public class Role implements Identifiable<Integer>, Serializable {
+public class Role implements Identifiable<Integer>, Serializable, Copyable<Role> {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(Role.class);
 
@@ -121,5 +121,28 @@ public class Role implements Identifiable<Integer>, Serializable {
                 .add(Role_.id.getName(), getId()) //
                 .add(Role_.roleName.getName(), getRoleName()) //
                 .toString();
+    }
+
+    /**
+     * Return a copy of the current object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public Role copy() {
+        Role role = new Role();
+        copyTo(role);
+        return role;
+    }
+
+    /**
+     * Copy the current properties to the given object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public void copyTo(Role role) {
+        role.setId(getId());
+        role.setRoleName(getRoleName());
     }
 }

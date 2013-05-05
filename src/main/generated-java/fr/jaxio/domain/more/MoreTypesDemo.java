@@ -29,13 +29,14 @@ import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.common.base.Objects;
+import fr.jaxio.domain.Copyable;
 import fr.jaxio.domain.Identifiable;
 import fr.jaxio.domain.IdentifiableHashBuilder;
 import fr.jaxio.domain.more.MoreTypesDemo_;
 
 @Entity
 @Table(name = "MORE_TYPES_DEMO")
-public class MoreTypesDemo implements Identifiable<Integer>, Serializable {
+public class MoreTypesDemo implements Identifiable<Integer>, Serializable, Copyable<MoreTypesDemo> {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(MoreTypesDemo.class);
 
@@ -303,5 +304,38 @@ public class MoreTypesDemo implements Identifiable<Integer>, Serializable {
                 .add(MoreTypesDemo_.dateTimeJoda.getName(), getDateTimeJoda()) //
                 .add(MoreTypesDemo_.version.getName(), getVersion()) //
                 .toString();
+    }
+
+    /**
+     * Return a copy of the current object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public MoreTypesDemo copy() {
+        MoreTypesDemo moreTypesDemo = new MoreTypesDemo();
+        copyTo(moreTypesDemo);
+        return moreTypesDemo;
+    }
+
+    /**
+     * Copy the current properties to the given object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public void copyTo(MoreTypesDemo moreTypesDemo) {
+        moreTypesDemo.setId(getId());
+        moreTypesDemo.setNumberInt(getNumberInt());
+        moreTypesDemo.setNumberLong(getNumberLong());
+        moreTypesDemo.setNumberDouble(getNumberDouble());
+        moreTypesDemo.setNumberFloat(getNumberFloat());
+        moreTypesDemo.setNumberBigInteger(getNumberBigInteger());
+        moreTypesDemo.setNumberBigDecimal(getNumberBigDecimal());
+        moreTypesDemo.setDateJavaTemporalDate(getDateJavaTemporalDate());
+        moreTypesDemo.setDateJavaTemporalTimestamp(getDateJavaTemporalTimestamp());
+        moreTypesDemo.setDateJoda(getDateJoda());
+        moreTypesDemo.setDateTimeJoda(getDateTimeJoda());
+        moreTypesDemo.setVersion(getVersion());
     }
 }

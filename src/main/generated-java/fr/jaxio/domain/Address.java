@@ -17,6 +17,9 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -30,7 +33,8 @@ import fr.jaxio.domain.IdentifiableHashBuilder;
 @Entity
 @Table(name = "ADDRESS")
 @Indexed
-public class Address implements Identifiable<Integer>, Serializable {
+@JsonSerialize(include=Inclusion.NON_EMPTY)
+public class Address implements Identifiable<Integer>, Serializable, Copyable<Address> {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(Address.class);
 
@@ -153,5 +157,30 @@ public class Address implements Identifiable<Integer>, Serializable {
                 .add(Address_.city.getName(), getCity()) //
                 .add(Address_.version.getName(), getVersion()) //
                 .toString();
+    }
+
+    /**
+     * Return a copy of the current object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public Address copy() {
+        Address address = new Address();
+        copyTo(address);
+        return address;
+    }
+
+    /**
+     * Copy the current properties to the given object
+     */
+    @Override
+    @Transient
+    @XmlTransient
+    public void copyTo(Address address) {
+        address.setId(getId());
+        address.setStreetName(getStreetName());
+        address.setCity(getCity());
+        address.setVersion(getVersion());
     }
 }
